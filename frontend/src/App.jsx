@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import Navbar from "./components/Navbar";
+import LandingHero from "./components/LandingHero";
+import Features from "./components/Features";
+import RoleToggle from "./components/RoleToggle";
+import PatientForm from "./components/PatientForm";
+import RiskResult from "./components/RiskResult";
+import TrendChart from "./components/TrendChart";
+import Disclaimer from "./components/Disclaimer";
+import Footer from "./components/Footer";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [started, setStarted] = useState(false);
+  const [role, setRole] = useState("patient");
+  const [risk, setRisk] = useState(null);
+
+  const handleAnalyze = (data) => {
+    const mockRisk = Math.random() * (0.9 - 0.2) + 0.2;
+    setRisk(mockRisk);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <Navbar started={started} setStarted={setStarted} />
+
+      {!started ? (
+        <>
+          <LandingHero onStart={() => setStarted(true)} />
+          <Features />
+        </>
+      ) : (
+        <div className="container">
+          <h1>Silent Disease Early Detection Engine</h1>
+          <RoleToggle role={role} setRole={setRole} />
+          <PatientForm onAnalyze={handleAnalyze} />
+          <RiskResult risk={risk} />
+          {role === "doctor" && risk && <TrendChart risk={risk} />}
+          <Disclaimer />
+        </div>
+      )}
+
+      <Footer />
+    </div>
+  );
 }
 
-export default App
+export default App;
