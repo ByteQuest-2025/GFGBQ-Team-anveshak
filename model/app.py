@@ -3,12 +3,16 @@ import joblib
 import numpy as np
 import pandas as pd
 
-# -----------------------------
-# 1. Load Model and Preprocessors
-# -----------------------------
-risk_model = joblib.load("risk_model.pkl")
-scaler = joblib.load("scaler.pkl")
-gender_encoder = joblib.load("gender_encoder.pkl")
+import os
+import joblib
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "risk_model.pkl")
+SCALER_PATH = os.path.join(BASE_DIR, "scaler.pkl")
+ENCODER_PATH = os.path.join(BASE_DIR, "gender_encoder.pkl")
+risk_model = joblib.load(MODEL_PATH)
+scaler = joblib.load(SCALER_PATH)
+gender_encoder = joblib.load(ENCODER_PATH)
 
 # -----------------------------
 # 2. Feature Columns
