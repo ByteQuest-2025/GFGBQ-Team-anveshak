@@ -2,11 +2,7 @@
 __pycache__/
 *.pyc
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
 
-# ML models
-*.pkl
 
 node_modules
 .env
