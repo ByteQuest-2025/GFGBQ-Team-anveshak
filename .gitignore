@@ -8,3 +8,5 @@ __pycache__/
 # ML models
 *.pkl
 
+node_modules
+.env
