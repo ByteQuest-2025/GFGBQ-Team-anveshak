@@ -27,10 +27,10 @@ Anveshak
  -
 
 # 2-Minute Demonstration Video
--
+-https://drive.google.com/file/d/18labeMROg3x9TfmyVvyMQlwhSDyYBohc/view?usp=sharing
 
 # PPT Link
--
+-https://drive.google.com/file/d/1pgEWsPIqLNYPRoPJ93ozuPaFBNbRL4Mg/view?usp=sharing 
 
 ---
 
