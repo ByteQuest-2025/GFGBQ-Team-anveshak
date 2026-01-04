@@ -27,7 +27,10 @@ export default function SignIn() {
     localStorage.setItem("token", res.data.token)
       toast.success("Logged in successfully ✅")
       navigate("/dashboard")
+        console.log(res.data.token);
       //window.location.href = "/dashboard"
+    
+      
      
   } catch (err) {
     setError(err.response?.data?.message || "Login failed")

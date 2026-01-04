@@ -45,13 +45,13 @@ export default function Home() {
             >
               Start Free Risk Check
             </Link>
-
-            <Link
-              to="#how-it-works"
+{/*  */}
+              <button
+              onClick={() => scrollToSection("how-it-works")}
               className="px-10 py-4 rounded-2xl border border-border hover:bg-muted transition"
             >
               How It Works
-            </Link>
+            </button>
           </div>
 
           {/* Trust stats */}

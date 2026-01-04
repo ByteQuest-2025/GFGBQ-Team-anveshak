@@ -4,6 +4,8 @@ import LifeStyle from "../components/steps/LifeStyle"
 import MedicalData from "../components/steps/MedicalData"
 import FamilyHistory from "../components/steps/FamilyHistory"
 import ProgressBar from "../components/ProgressBar"
+import api from "../api/api"
+import toast from "react-hot-toast"
 
 const steps = ["User Info", "Lifestyle", "Medical Data", "Family History"]
 
@@ -60,14 +62,93 @@ export default function Assessment() {
     }
   }
 
-  const handleNext = () => {
-    if (activeStep < steps.length - 1) {
-      setActiveStep(prev => prev + 1)
-    } else {
-      alert("✅ Assessment completed successfully!")
-      console.log("Collected Data:", formData)
+
+const handleNext = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login again");
+      return;
     }
+
+    // 1️⃣ Save assessment step to YOUR backend
+    await api.post(
+      "/api/user/assessment",
+      formData,
+      {
+        headers: {
+          Authorization: `${token}`, // ✅ FIXED
+        },
+      }
+    );
+
+    // 2️⃣ IF LAST STEP → CALL ML MODEL
+    if (activeStep === steps.length - 1) {
+
+      const mlResponse = await api.post(
+        "https://silent-disease-detection.onrender.com/predict-risk",
+        {
+          age: Number(formData.age),
+          gender: formData.gender,
+          bmi: Number(formData.bmi),
+          avg_sleep_hours: Number(formData.avg_sleep_hours),
+          avg_daily_steps: Number(formData.avg_daily_steps),
+          alcohol_units_per_week: Number(formData.alcohol_units_per_week),
+          smoking_status: Number(formData.smoking_status),
+          stress_score: Number(formData.stress_score),
+
+          systolic_bp: Number(formData.systolic_bp),
+          diastolic_bp: Number(formData.diastolic_bp),
+          resting_heart_rate: Number(formData.resting_heart_rate),
+          fasting_glucose: Number(formData.fasting_glucose),
+          hba1c: Number(formData.hba1c),
+
+          cholesterol_total: Number(formData.cholesterol_total),
+          hdl: Number(formData.hdl),
+          ldl: Number(formData.ldl),
+          triglycerides: Number(formData.triglycerides),
+          alt: Number(formData.alt),
+          ast: Number(formData.ast),
+
+          phq9_score: Number(formData.phq9_score),
+          gad7_score: Number(formData.gad7_score),
+
+          family_diabetes: Number(formData.family_diabetes),
+          family_hypertension: Number(formData.family_hypertension),
+          family_heart_disease: Number(formData.family_heart_disease),
+          family_liver_disease: Number(formData.family_liver_disease),
+        }
+      );
+
+      // 3️⃣ STORE RESULTS FOR DASHBOARD
+      sessionStorage.setItem(
+        "assessmentData",
+        JSON.stringify(formData)
+      );
+
+      sessionStorage.setItem(
+        "riskPrediction",
+        JSON.stringify(mlResponse.data)
+      );
+
+      toast.success("Assessment completed successfully!");
+
+      // navigate("/dashboard");
+      return;
+    }
+
+    // 4️⃣ NORMAL STEP CONTINUE
+    toast.success("Saved successfully");
+    setActiveStep(prev => prev + 1);
+
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    toast.error(
+      error.response?.data?.message || "Error saving assessment"
+    );
   }
+};
+
 
   const handleBack = () => {
     if (activeStep > 0) {

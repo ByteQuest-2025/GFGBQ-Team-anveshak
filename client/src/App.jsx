@@ -6,6 +6,7 @@ import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
 import Assessment from "./pages/Assessment"
 import { Toaster } from "react-hot-toast"
+import Dashboard from "./components/Dashboard"
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         Ass<Route path="/assessment" element={<Assessment/>} />
 
       </Routes>
