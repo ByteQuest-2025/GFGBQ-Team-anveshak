@@ -48,36 +48,101 @@ This project is an AI-powered platform that predicts early risks for silent dise
 
 ---
 
+# 🤖 Machine Learning Model Overview
+
+The system uses a trained **machine learning classification model** to predict a user's health risk based on multiple factors.
+
+# 🔍 Inputs
+- Age and gender
+- Medical history
+- Lifestyle habits
+- Family medical history
+
+# 🧠 Model
+- Trained using historical health data
+- Features are preprocessed using scaling and encoding
+- The model outputs a **risk score** and **risk category** (Low / Medium / High)
+
+# ⚙️ Integration
+- The backend sends user data to the ML model API
+- The model processes the input and returns predictions
+- Results are displayed in the frontend dashboard
+
+> The ML model is pre-trained and stored using serialized files for fast inference.
+
+📁 Project Structure
+
+GFGBQ-Team-anveshak/
+│
+├── client/        # React (Vite) frontend
+├── server/        # Node.js + Express backend
+├── model/         # ML model & prediction logic
+└── README.md
+
+---
+
 # Setup and Installation
-1. Clone the repository:
-```bash
-git clone https://github.com/YourUsername/YourRepoName.git
-cd YourRepoName/frontend
 
-2. Install dependencies:
+🛠️ Setup and Installation
+1️⃣ Clone the Repository
+git clone https://github.com/ByteQuest-2025/GFGBQ-Team-anveshak.git
+cd GFGBQ-Team-anveshak
 
-npm install
-
-
-3. Run the app:
-
-npm start
-
-
-4. Backend setup (if applicable):
-
-cd ../server
+💻 Frontend Setup (Client)
+cd client
 npm install
 npm run dev
 
-# Usage Instructions
 
-Open the app in your browser (default: http://localhost:5173/)
+📍 Frontend will run at:
+http://localhost:5173/
 
-Fill the multi-step patient form
+🖥️ Backend Setup (Server)
+cd ../server
+npm install
 
-View your risk analysis dashboard
+Create .env file in server/
+PORT=3000
+MONGODB_URI=mongodb://127.0.0.1:27017
 
-Download your personalized risk report
+
+Database name (earlysense) is appended automatically in the code.
+
+Start the backend server
+npm start
 
 
+📍 Backend runs at:
+http://localhost:3000/
+
+🤖 ML Model Setup (Optional)
+cd ../model
+pip install -r requirements.txt
+
+
+Run the model:
+
+python app.py
+
+🚀 Usage Instructions
+
+Open the frontend in your browser
+👉 http://localhost:5173/
+
+Sign up or log in as a user
+
+Fill in the multi-step patient assessment form
+
+User Information
+
+Medical History
+
+Lifestyle Details
+
+Family History
+
+Submit the form to generate a health risk analysis
+
+View your personalized risk dashboard
+
+Download or review your risk assessment report
