@@ -2,9 +2,11 @@ from flask import Flask, request, jsonify
 import joblib
 import numpy as np
 import pandas as pd
-
+from flask_cors import CORS
 import os
 import joblib
+
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "risk_model.pkl")
@@ -42,7 +44,7 @@ TARGET_COLUMNS = [
 # 3. Initialize Flask App
 # -----------------------------
 app = Flask(__name__)
-
+CORS(app)
 # -----------------------------
 # 4. Prediction API
 # -----------------------------
