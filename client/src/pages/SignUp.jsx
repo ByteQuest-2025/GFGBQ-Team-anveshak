@@ -1,6 +1,11 @@
 import { useState } from "react"
 import { Eye, EyeOff, Mail, Lock, User, Chrome, Github } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link ,useNavigate} from "react-router-dom"
+import api from "../api/api";
+import toast from "react-hot-toast";
+
+
+
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
@@ -15,11 +20,14 @@ export default function SignUp() {
     userType: "patient",
   })
 
+  const navigate = useNavigate()
+
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
     setError("")
 
@@ -33,12 +41,29 @@ export default function SignUp() {
       return
     }
 
+    
+  try {
     setIsLoading(true)
-    setTimeout(() => {
-      console.log("Sign up:", formData)
-      setIsLoading(false)
-      window.location.href = "/dashboard"
-    }, 1200)
+
+    const res = await api.post("/api/user/register", {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    })
+
+    
+
+    localStorage.setItem("token", res.data.token)
+    toast.success("User registered successfully 🎉")
+    navigate("/dashboard")
+
+
+  } catch (err) {
+    setError(err.response?.data?.message || "Signup failed")
+  } finally {
+    setIsLoading(false)
+  }
+
   }
 
   return (
@@ -165,7 +190,6 @@ export default function SignUp() {
             {isLoading ? "Creating account..." : "Create Account"}
           </button>
 
-          {/* OAuth */}
         
          
         </form>

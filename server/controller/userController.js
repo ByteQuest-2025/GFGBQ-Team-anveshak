@@ -61,6 +61,8 @@ try {
 
      // return success msg
      const token = generateToken(user._id);
+     
+    
      user.password = undefined;
 
      return res.status(200).json({message:"Login successful,", token, user});

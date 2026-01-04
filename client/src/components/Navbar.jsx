@@ -1,15 +1,35 @@
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const navigate = useNavigate()
+
+  const isLoggedIn = !!localStorage.getItem("token")
 
   const scrollToSection = (id) => {
     setIsOpen(false)
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior: "smooth" })
   }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    toast.success("Logged out successfully 👋")
+    navigate("/signin")
+  }
+  const handleGetStarted = () => {
+  const token = localStorage.getItem("token")
+  if (!token) {
+    navigate("/signin")
+    toast.error("Please login to continue")
+    
+  } else {
+    navigate("/assessment")
+  }
+}
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50 shadow-sm">
@@ -35,19 +55,29 @@ export default function Navbar() {
               How It Works
             </button>
 
-            <Link
-              to="/signin"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition"
-            >
-              Sign In
-            </Link>
+            {!isLoggedIn ? (
+              <Link
+                to="/signin"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition"
+              >
+                Sign In
+              </Link>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="text-sm font-medium text-red-500 hover:text-red-600 transition cursor-pointer"
+              >
+                Logout
+              </button>
+            )}
 
-            <Link
-              to="/assessment"
-              className="px-5 py-2 rounded-xl text-sm font-medium bg-primary text-primary-foreground shadow-md hover:shadow-lg hover:scale-[1.03] transition"
-            >
-              Get Started
-            </Link>
+          <button
+  onClick={handleGetStarted}
+  className="px-5 py-2 rounded-xl text-sm font-medium bg-primary text-primary-foreground shadow-md hover:shadow-lg hover:scale-[1.03] transition"
+>
+  Get Started
+</button>
+
           </div>
 
           {/* Mobile Button */}
@@ -71,21 +101,37 @@ export default function Navbar() {
               How It Works
             </button>
 
-            <Link
-              to="/signin"
-              onClick={() => setIsOpen(false)}
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground transition"
-            >
-              Sign In
-            </Link>
+            {!isLoggedIn ? (
+              <Link
+                to="/signin"
+                onClick={() => setIsOpen(false)}
+                className="block text-sm font-medium text-muted-foreground hover:text-foreground transition"
+              >
+                Sign In
+              </Link>
+            ) : (
+              <button
+                onClick={() => {
+                  setIsOpen(false)
+                  handleLogout()
+                }}
+                className="block text-left text-sm font-medium text-red-500 hover:text-red-600 transition"
+              >
+                Logout
+              </button>
+            )}
 
-            <Link
-              to="/assessment"
-              onClick={() => setIsOpen(false)}
-              className="block text-center py-2 rounded-xl bg-primary text-primary-foreground font-medium shadow hover:shadow-lg transition"
-            >
-              Get Started
-            </Link>
+          <button
+  onClick={() => {
+    setIsOpen(false)
+    handleGetStarted()
+  }}
+  className="block w-full text-center py-2 rounded-xl bg-primary text-primary-foreground font-medium shadow hover:shadow-lg transition"
+>
+  Get Started
+</button>
+
+
           </div>
         </div>
       )}

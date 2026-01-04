@@ -5,10 +5,14 @@ import Home from "./pages/Home"
 import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
 import Assessment from "./pages/Assessment"
+import { Toaster } from "react-hot-toast"
+
 
 const App = () => {
   return (
+    
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-cyan-50">
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

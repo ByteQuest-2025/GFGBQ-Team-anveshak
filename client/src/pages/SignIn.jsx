@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { Eye, EyeOff, Mail, Lock, Chrome, Github } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
+import api from "../api/api"
+import toast from "react-hot-toast"
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
@@ -9,19 +11,30 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async(e) => {
     e.preventDefault()
     setError("")
     setIsLoading(true)
 
-    setTimeout(() => {
-      if (email && password) {
-        window.location.href = "/dashboard"
-      } else {
-        setError("Please enter both email and password")
-      }
-      setIsLoading(false)
-    }, 1000)
+  try {
+    const res = await api.post("/api/user/login", {
+      email,
+      password,
+    })
+    
+    localStorage.setItem("token", res.data.token)
+      toast.success("Logged in successfully ✅")
+      navigate("/dashboard")
+      //window.location.href = "/dashboard"
+     
+  } catch (err) {
+    setError(err.response?.data?.message || "Login failed")
+  } finally {
+    setIsLoading(false)
+  }
+
   }
 
   return (
